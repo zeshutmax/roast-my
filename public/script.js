@@ -12,26 +12,38 @@ function tryExample(url) {
   const urlInput = document.getElementById('urlInput');
   urlInput.value = url;
   
-  // Add visual feedback
+  // Add visual feedback with ripple effect
+  const button = event.currentTarget;
+  const ripple = document.createElement('div');
+  ripple.classList.add('ripple');
+  button.appendChild(ripple);
+  
+  // Position the ripple
+  const rect = button.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${event.clientX - rect.left - size/2}px`;
+  ripple.style.top = `${event.clientY - rect.top - size/2}px`;
+  
+  // Remove ripple after animation
+  setTimeout(() => ripple.remove(), 600);
+  
+  // Add highlight effect to input
   urlInput.classList.add('highlight');
   setTimeout(() => urlInput.classList.remove('highlight'), 1000);
   
-  // Smooth scroll to input
+  // Smooth scroll to input with easing
   urlInput.scrollIntoView({ 
     behavior: 'smooth',
     block: 'center'
   });
   
-  // Collapse examples grid
-  const examplesGrid = document.getElementById('examplesGrid');
-  const toggleButton = document.querySelector('.examples-toggle');
-  examplesGrid.classList.remove('visible');
-  toggleButton.textContent = 'Show example targets 🎯';
-  
   // Add small delay before analyzing
   setTimeout(() => {
     analyzeWebsite();
   }, 300);
+  
+  toggleClearButton();
 }
 
 function updateLoadingMessage() {
@@ -92,19 +104,6 @@ document.getElementById('urlInput').addEventListener('keypress', (e) => {
         analyzeWebsite();
     }
 });
-
-function toggleExamples() {
-    const examplesGrid = document.getElementById('examplesGrid');
-    const toggleButton = document.querySelector('.examples-toggle');
-    
-    if (examplesGrid.classList.contains('visible')) {
-        examplesGrid.classList.remove('visible');
-        toggleButton.textContent = 'Show example targets 🎯';
-    } else {
-        examplesGrid.classList.add('visible');
-        toggleButton.textContent = 'Hide examples 👆';
-    }
-}
 
 async function analyzeWebsite() {
     const urlInput = document.getElementById('urlInput');
@@ -232,4 +231,61 @@ function shareOnLinkedIn() {
     const url = encodeURIComponent(window.location.href);
     const title = encodeURIComponent('Check out this brutal website roast! 🔥');
     window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}`, '_blank');
-} 
+}
+
+// Clear input functionality
+const urlInput = document.getElementById('urlInput');
+const clearButton = document.getElementById('clearInput');
+
+// Initialize clear button visibility
+toggleClearButton();
+
+function toggleClearButton() {
+    clearButton.classList.toggle('visible', urlInput.value.length > 0);
+}
+
+function clearInput(e) {
+    e.preventDefault();
+    urlInput.value = '';
+    toggleClearButton();
+    urlInput.focus();
+}
+
+// Event listeners for clear button
+clearButton.addEventListener('click', clearInput);
+urlInput.addEventListener('input', toggleClearButton);
+urlInput.addEventListener('change', toggleClearButton);
+
+// Also handle example URLs
+const originalTryExample = tryExample;
+function tryExample(url) {
+    originalTryExample(url);
+    toggleClearButton();
+}
+
+// Remove toggleExamples function since it's no longer needed
+// Remove the style for collapseGrid animation since it's no longer needed
+const style = document.createElement('style');
+style.textContent = `
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+    pointer-events: none;
+  }
+  
+  @keyframes ripple {
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+  .example-category {
+    opacity: 1;
+    transform: none;
+  }
+`;
+document.head.appendChild(style); 
