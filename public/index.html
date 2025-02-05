@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoastMy.Site - Professional Digital Presence Critique | AI-Powered Roasts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="floating-emoji emoji-1">🎭</div>
+      <div class="floating-emoji emoji-2">🎤</div>
+      <div class="floating-emoji emoji-3">😈</div>
+      <div class="floating-emoji emoji-4">🔥</div>
+      <div class="floating-emoji emoji-5">💫</div>
+      <div class="floating-emoji emoji-6">⚡</div>
+      
+      <h1>RoastMy.Site</h1>
+      <div class="tagline">Professional Digital Presence Destruction Services</div>
+      <p class="subtitle">Our AI mercilessly analyzes and critiques websites, social media profiles, company pages, and digital content with ruthless precision</p>
+      
+      <div class="features">
+        <div class="feature">🤖 Enterprise-Grade Roasting</div>
+        <div class="feature">⚡ Ruthless Analysis</div>
+        <div class="feature">🎯 Zero Mercy Policy</div>
+      </div>
+    </div>
+
+    <div class="url-form">
+      <p class="cta-text">Submit your target for immediate demolition. 🔥</p>
+      <div class="input-group">
+        <input type="url" id="urlInput" placeholder="Enter any URL: website, social profile, company page..." required>
+        <button onclick="analyzeWebsite()">Initiate Roast 🔥</button>
+      </div>
+      <div class="example-urls">
+        <button class="examples-toggle" onclick="toggleExamples()">View Premium Targets 🎯</button>
+        <div class="examples-grid" id="examplesGrid">
+          <div class="example-category">
+            <h3>🌟 High-Profile Targets</h3>
+            <button class="example-url" onclick="tryExample('https://www.gwynethpaltrow.com')">Gwyneth Paltrow Empire</button>
+            <button class="example-url" onclick="tryExample('https://www.kanyewest.com')">Kanye's Digital Kingdom</button>
+            <button class="example-url" onclick="tryExample('https://www.marthastewart.com')">Martha's Perfect World</button>
+          </div>
+          <div class="example-category">
+            <h3>🏢 Corporate Entities</h3>
+            <button class="example-url" onclick="tryExample('https://www.meta.com')">Meta's Metaverse</button>
+            <button class="example-url" onclick="tryExample('https://www.twitter.com')">Twitter/X Chaos</button>
+            <button class="example-url" onclick="tryExample('https://www.microsoft.com')">Microsoft's Empire</button>
+          </div>
+          <div class="example-category">
+            <h3>🛍️ Brand Demolition</h3>
+            <button class="example-url" onclick="tryExample('https://www.crocs.com')">Crocs Fashion Crime</button>
+            <button class="example-url" onclick="tryExample('https://www.tesla.com')">Tesla's Promises</button>
+            <button class="example-url" onclick="tryExample('https://www.peloton.com')">Peloton's Perfection</button>
+          </div>
+          <div class="example-category">
+            <h3>💼 Notable Cases</h3>
+            <button class="example-url" onclick="tryExample('https://www.spacejam.com/1996')">Space Jam Legacy</button>
+            <button class="example-url" onclick="tryExample('https://www.lingscars.com')">Ling's Empire</button>
+            <button class="example-url" onclick="tryExample('https://www.berkshirehathaway.com')">Berkshire's Time Capsule</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="result">
+      <div class="loading-container">
+        <div class="loading-message"></div>
+        <div class="loading-spinner"></div>
+      </div>
+      <div class="roast-content"></div>
+      <div class="share-buttons">
+        <button onclick="shareOnTwitter()" class="share-btn twitter">Share on Twitter 🐦</button>
+        <button onclick="copyToClipboard()" class="share-btn copy">Copy Roast 📋</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</body>
+</html> 
