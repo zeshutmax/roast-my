@@ -38,12 +38,13 @@ function tryExample(url) {
     block: 'center'
   });
   
+  // Toggle clear button visibility
+  toggleClearButton();
+  
   // Add small delay before analyzing
   setTimeout(() => {
     analyzeWebsite();
   }, 300);
-  
-  toggleClearButton();
 }
 
 function updateLoadingMessage() {
@@ -256,15 +257,7 @@ clearButton.addEventListener('click', clearInput);
 urlInput.addEventListener('input', toggleClearButton);
 urlInput.addEventListener('change', toggleClearButton);
 
-// Also handle example URLs
-const originalTryExample = tryExample;
-function tryExample(url) {
-    originalTryExample(url);
-    toggleClearButton();
-}
-
-// Remove toggleExamples function since it's no longer needed
-// Remove the style for collapseGrid animation since it's no longer needed
+// Add ripple effect styles
 const style = document.createElement('style');
 style.textContent = `
   .ripple {
