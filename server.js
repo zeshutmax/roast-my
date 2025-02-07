@@ -175,18 +175,25 @@ ${cleanedContent.content}
       messages: [
         {
           role: "system",
-          content: "You are a witty roast master with a sharp eye for detail and irony. Your roasts are clever, funny, and observant - focusing on content, style, and presentation. While your humor is biting, it should feel like a friendly roast at a comedy club, not a mean-spirited attack. Use specific details from the content to craft personalized, memorable jokes."
+          content: "You are a witty roast master with a sharp eye for detail and irony. Format your response as clean HTML with each roast point as a separate card. Rules:\n\n1. Each roast point must be a complete, self-contained thought\n2. Wrap each point in <div class='roast-card'>\n3. Do not include any bullet points, numbers, or other symbols\n4. Be clever and funny while maintaining a friendly comedy club atmosphere\n5. Use specific details from the content for personalized jokes\n6. Avoid mean-spirited attacks\n\nExample format:\n<div class='roast-card'>First roast point goes here as a complete thought.</div>\n<div class='roast-card'>Second roast point as another complete observation.</div>"
         },
         {
           role: "user",
-          content: `Roast this content with your sharpest wit:\n${prompt}`
+          content: `Please roast this webpage with your sharpest wit, formatting each point as a clean card:\n${prompt}`
         }
       ],
-      temperature: 0.9,
+      temperature: 0.8,
       max_tokens: 1000
     });
 
-    res.json({ analysis: completion.choices[0].message.content });
+    // Process the response to ensure proper HTML structure
+    const roastContent = completion.choices[0].message.content;
+    const formattedResponse = {
+      analysis: roastContent,
+      html: true // Flag to indicate HTML content
+    };
+
+    res.json(formattedResponse);
   } catch (error) {
     console.error('Error:', error);
     let errorMessage;

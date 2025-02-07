@@ -32,12 +32,6 @@ function tryExample(url) {
   urlInput.classList.add('highlight');
   setTimeout(() => urlInput.classList.remove('highlight'), 1000);
   
-  // Smooth scroll to input with easing
-  urlInput.scrollIntoView({ 
-    behavior: 'smooth',
-    block: 'center'
-  });
-  
   // Toggle clear button visibility
   toggleClearButton();
   
@@ -117,42 +111,16 @@ async function analyzeWebsite() {
     }
 
     try {
-        // Reset and show the result div first
+        // Reset and show the result div
         resultDiv.innerHTML = `
             <div class="loading-container">
-                <div class="loading-message"></div>
+                <div class="loading-message">Warming up the roasting machine... 🔥</div>
                 <div class="loading-spinner"></div>
-            </div>
-            <div class="roast-content"></div>
-            <div class="share-buttons">
-                <button onclick="shareOnTwitter()" class="share-btn twitter">
-                    <span>Share on Twitter</span> 🐦
-                </button>
-                <button onclick="shareOnFacebook()" class="share-btn facebook">
-                    <span>Share on Facebook</span> 📱
-                </button>
-                <button onclick="shareOnLinkedIn()" class="share-btn linkedin">
-                    <span>Share on LinkedIn</span> 💼
-                </button>
-                <button onclick="copyToClipboard()" class="share-btn copy">
-                    <span>Copy Roast</span> 📋
-                </button>
             </div>
         `;
 
-        // Get fresh references
-        const loadingContainer = resultDiv.querySelector('.loading-container');
-        const roastContent = resultDiv.querySelector('.roast-content');
-        const shareButtons = resultDiv.querySelector('.share-buttons');
-        
         // Show loading state
         resultDiv.classList.add('visible');
-        loadingContainer.style.display = 'block';
-        roastContent.style.display = 'none';
-        shareButtons.style.display = 'none';
-        
-        // Scroll to result immediately to show loading state
-        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
         // Start loading messages
         updateLoadingMessage();
@@ -175,20 +143,50 @@ async function analyzeWebsite() {
 
         // Clear loading state
         clearInterval(loadingInterval);
-        loadingContainer.style.display = 'none';
         
         // Show result with animation
-        roastContent.textContent = data.analysis;
-        roastContent.style.display = 'block';
-        shareButtons.style.display = 'flex';
-        
-        // Trigger confetti
-        showConfetti();
-        
-        // Scroll again to ensure the full result is visible
-        setTimeout(() => {
+        if (data.analysis) {
+            // Clear previous results
+            resultDiv.innerHTML = '';
+            
+            // Clean the analysis text by removing markdown and HTML
+            const cleanAnalysis = data.analysis
+                .replace(/```[a-z]*\n?/g, '') // Remove code block markers
+                .replace(/`/g, '')  // Remove inline code markers
+                .replace(/<[^>]*>/g, ''); // Remove HTML tags
+            
+            // Split by newlines and create cards
+            const points = cleanAnalysis.split('\n').filter(point => point.trim());
+            const cardsHTML = points.map((point, index) => 
+                `<div class="roast-card" style="--card-index: ${index}">${point}</div>`
+            ).join('');
+            
+            resultDiv.innerHTML = cardsHTML;
+            
+            // Add share buttons after the cards
+            resultDiv.innerHTML += `
+                <div class="share-buttons">
+                    <button onclick="shareOnTwitter()" class="share-btn twitter">
+                        <span>Share on Twitter</span> 🐦
+                    </button>
+                    <button onclick="shareOnFacebook()" class="share-btn facebook">
+                        <span>Share on Facebook</span> 📱
+                    </button>
+                    <button onclick="shareOnLinkedIn()" class="share-btn linkedin">
+                        <span>Share on LinkedIn</span> 💼
+                    </button>
+                    <button onclick="copyToClipboard()" class="share-btn copy">
+                        <span>Copy Roast</span> 📋
+                    </button>
+                </div>
+            `;
+            
+            // Trigger confetti
+            showConfetti();
+            
+            // Scroll to result with smooth behavior and margin
             resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+        }
     } catch (error) {
         showError(error.message || 'Failed to analyze the website');
     }
@@ -202,7 +200,10 @@ function showResult(roastContent) {
     
     loadingContainer.style.display = 'none';
     roastContentDiv.style.display = 'block';
-    roastContentDiv.textContent = roastContent;
+    
+    // Escape HTML content by creating a text node
+    roastContentDiv.textContent = roastContent.replace(/```/g, '');
+    
     shareButtons.innerHTML = `
         <button onclick="shareOnTwitter()" class="share-btn twitter">
             <span>Share on Twitter</span> 🐦
@@ -217,10 +218,10 @@ function showResult(roastContent) {
             <span>Copy Roast</span> 📋
         </button>
     `;
-    shareButtons.style.display = 'flex';
     
-    // Smooth scroll to result
+    resultDiv.classList.add('visible');
     resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showConfetti();
 }
 
 function shareOnFacebook() {
