@@ -39,6 +39,7 @@ body {
 .container {
   max-width: 800px;
   width: 100%;
+  overflow-x: hidden;
   margin: 0 auto;
   padding: 1rem;
 }
@@ -671,7 +672,7 @@ body::after {
   padding: 0.25rem 0.5rem;
   font-size: 0.9rem;
   box-shadow: none;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
 }
 
